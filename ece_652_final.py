@@ -1,5 +1,5 @@
 import os
-
+import math
 print("Welcome to Ahmad Bilal Irfan's RMS Simulator")
 
 workLoadFileName = "" # Initialize the workload file name
@@ -53,4 +53,12 @@ for i, line in enumerate(lines):
     }
 
     tasks.append(task)
-print (tasks)
+
+# Number of tasks and details of each task
+numberOfTasks = len(tasks)
+hyperPeriod = 1 
+for i in range(numberOfTasks):
+    period = tasks[i]['period']
+    hyperPeriod = math.lcm(int(hyperPeriod), int(period))
+    print(f"Task {i+1}: Execution: {tasks[i]['execution']}, Period: {tasks[i]['period']}, Deadline: {tasks[i]['deadline']}")
+    print (f"Hyperperiod after Task {i+1}: {hyperPeriod}")
