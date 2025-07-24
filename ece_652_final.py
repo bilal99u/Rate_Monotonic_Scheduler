@@ -62,3 +62,4 @@ for i in range(numberOfTasks):
     hyperPeriod = math.lcm(int(hyperPeriod), int(period))
     print(f"Task {i+1}: Execution: {tasks[i]['execution']}, Period: {tasks[i]['period']}, Deadline: {tasks[i]['deadline']}")
     print (f"Hyperperiod after Task {i+1}: {hyperPeriod}")
+print(f"Total number of tasks: {numberOfTasks}")
