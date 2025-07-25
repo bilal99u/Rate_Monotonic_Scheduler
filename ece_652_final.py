@@ -22,13 +22,10 @@ while (True):
     else:
         print(f"File '{workLoadFileName}' does not exist, Please enter a valid file name.")
 
-print ("File was read successfully.")
-
 tasks = []
 
 # Splitting content into individual lines
 lines = content.strip().split('\n')
-
 
 # Step 2: Parse each line
 for i, line in enumerate(lines):
@@ -60,11 +57,7 @@ hyperPeriod = 1
 for i in range(numberOfTasks):
     period = tasks[i]['period']
     hyperPeriod = math.lcm(int(hyperPeriod), int(period))
-    print(f"Task {i+1}: Execution: {tasks[i]['execution']}, Period: {tasks[i]['period']}, Deadline: {tasks[i]['deadline']}")
-
-print(f"Total number of tasks: {numberOfTasks}")
-print(f"Hyperperiod after Task {numberOfTasks}: {hyperPeriod}")
-# Generating jobs for one hyperperiod
+    # Generating jobs for one hyperperiod
 jobs = []
 
 for task_id, task in enumerate(tasks):
@@ -80,5 +73,52 @@ for task_id, task in enumerate(tasks):
         jobs.append(job)
         release_time += task['period']
 
-print (jobs)
-print ('test commit to github')
+current_job = None
+schedulable = True
+preemption_counts = [0] * numberOfTasks
+
+
+for t in range(int(hyperPeriod)):
+    # Find ready jobs
+    ready_jobs = [
+        job for job in jobs
+        if job['release_time'] <= t and
+           job['remaining_time'] > 0 and
+           t < job['deadline']
+    ]
+
+    if not ready_jobs:
+        current_job = None  # CPU idle
+        continue
+
+    # Pick job with highest priority (lowest period)
+    job_to_run = min(ready_jobs, key=lambda job: job['period'])
+
+    # Preemption check: only if there was a previously running job
+    if current_job is not None and current_job != job_to_run:
+        if current_job['remaining_time'] > 0:
+            preemption_counts[current_job['task_id']] += 1
+
+    # Run job
+    job_to_run['remaining_time'] -= 1
+    print(f"Time {t}: Running Task {job_to_run['task_id'] + 1}, Remaining Time: {job_to_run['remaining_time']}")
+
+    # Update current_job pointer
+    current_job = job_to_run
+
+
+for job in jobs:
+    if job['remaining_time'] > 0:
+        schedulable = False
+        break
+
+if schedulable:
+    print(1)
+    print(','.join(str(p) for p in preemption_counts))
+else:
+    print(0)
+    print()
+print ("Printed number of tasks:", numberOfTasks)
+print("Hyperperiod:", hyperPeriod)  
+print("Preemption counts:", ','.join(str(p) for p in preemption_counts))
+print("Tasks:")
