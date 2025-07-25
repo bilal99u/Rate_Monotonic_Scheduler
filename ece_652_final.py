@@ -61,5 +61,24 @@ for i in range(numberOfTasks):
     period = tasks[i]['period']
     hyperPeriod = math.lcm(int(hyperPeriod), int(period))
     print(f"Task {i+1}: Execution: {tasks[i]['execution']}, Period: {tasks[i]['period']}, Deadline: {tasks[i]['deadline']}")
-    print (f"Hyperperiod after Task {i+1}: {hyperPeriod}")
+
 print(f"Total number of tasks: {numberOfTasks}")
+print(f"Hyperperiod after Task {numberOfTasks}: {hyperPeriod}")
+# Generating jobs for one hyperperiod
+jobs = []
+
+for task_id, task in enumerate(tasks):
+    release_time = 0
+    while release_time < hyperPeriod:
+        job = {
+            'task_id': task_id,
+            'release_time': release_time,
+            'deadline': release_time + task['deadline'],
+            'remaining_time': task['execution'],
+            'period': task['period']  
+        }
+        jobs.append(job)
+        release_time += task['period']
+
+print (jobs)
+print ('test commit to github')
