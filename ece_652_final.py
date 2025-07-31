@@ -1,26 +1,25 @@
 import os
+import sys
 import math
-print("Welcome to Ahmad Bilal Irfan's RMS Simulator")
 
-workLoadFileName = "" # Initialize the workload file name
-content = "" # Initialize content variable, which will hold the file content
+def main():
+    print("Welcome to Ahmad Bilal Irfan's RMS Simulator")
 
-# This loop will continue to read the workload until a valid file is provided 
-while (True):
-    workLoadFileName = input("Enter the workload file name: ")
-    print("You entered: " + workLoadFileName)
+    # ✅ Step 1: Read command-line argument
+    if len(sys.argv) != 2:
+        print("Usage: python3 ece_652_final.py <workload_file>")
+        sys.exit(1)
 
-    # Check if the file exists
-    if os.path.isfile(workLoadFileName):
-        print(f"File '{workLoadFileName}' exists. Opening in read mode...")
-        with open(workLoadFileName, 'r') as file:
-            content = file.read()
-            print("File content:")
-            print(content)
-            break
-            
-    else:
-        print(f"File '{workLoadFileName}' does not exist, Please enter a valid file name.")
+    workLoadFileName = sys.argv[1]
+
+    # ✅ Step 2: Check if file exists
+    if not os.path.isfile(workLoadFileName):
+        print(f"❌ ERROR: File '{workLoadFileName}' does not exist.")
+        sys.exit(1)
+
+    # ✅ Step 3: Read file content
+    with open(workLoadFileName, 'r') as file:
+        content = file.read()
 
 tasks = []
 
@@ -79,7 +78,6 @@ preemption_counts = [0] * numberOfTasks
 
 
 for t in range(int(hyperPeriod)):
-    # Find ready jobs
     ready_jobs = [
         job for job in jobs
         if job['release_time'] <= t and
@@ -91,19 +89,13 @@ for t in range(int(hyperPeriod)):
         current_job = None  # CPU idle
         continue
 
-    # Pick job with highest priority (lowest period)
     job_to_run = min(ready_jobs, key=lambda job: job['period'])
 
-    # Preemption check: only if there was a previously running job
     if current_job is not None and current_job != job_to_run:
         if current_job['remaining_time'] > 0:
             preemption_counts[current_job['task_id']] += 1
 
-    # Run job
     job_to_run['remaining_time'] -= 1
-    print(f"Time {t}: Running Task {job_to_run['task_id'] + 1}, Remaining Time: {job_to_run['remaining_time']}")
-
-    # Update current_job pointer
     current_job = job_to_run
 
 
@@ -118,7 +110,3 @@ if schedulable:
 else:
     print(0)
     print()
-print ("Printed number of tasks:", numberOfTasks)
-print("Hyperperiod:", hyperPeriod)  
-print("Preemption counts:", ','.join(str(p) for p in preemption_counts))
-print("Tasks:")
