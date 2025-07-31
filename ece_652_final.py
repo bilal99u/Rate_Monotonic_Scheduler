@@ -3,10 +3,8 @@ import sys
 import math
 
 def main():
-    print("Welcome to Ahmad Bilal Irfan's RMS Simulator")
-
     if len(sys.argv) != 2:
-        print("Usage: python3 ece_652_final.py <workload_file>")
+        print("Usage: python ece_652_final.py <workload_file>")
         sys.exit(1)
 
     workLoadFileName = sys.argv[1]
