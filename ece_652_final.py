@@ -18,12 +18,15 @@ def main():
 
     tasks = []
     lines = content.strip().split('\n')
-
+    schedulable = True
+    workloadError = False # Flag to track workload errors
     for i, line in enumerate(lines):
         parts = line.strip().split(',')
 
         if len(parts) != 3:
             print(f"Skipping line {i+1}: expected 3 values, got {len(parts)}")
+            schedulable = False
+            workloadError = True
             continue
 
         try:
@@ -32,6 +35,8 @@ def main():
             deadline = float(parts[2])
         except ValueError as e:
             print(f"Error parsing line {i+1}: {e}")
+            schedulable = False
+            workloadError = True
             continue
 
         task = {
@@ -63,7 +68,7 @@ def main():
             release_time += task['period']
 
     current_job = None
-    schedulable = True
+    
     preemption_counts = [0] * numberOfTasks
 
     for t in range(int(hyperPeriod)):
@@ -92,7 +97,7 @@ def main():
             schedulable = False
             break
 
-    if schedulable:
+    if schedulable and not workloadError:
         print(1)
         print(','.join(str(p) for p in preemption_counts))
     else:
