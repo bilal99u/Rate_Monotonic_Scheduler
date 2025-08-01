@@ -104,7 +104,7 @@ def main():                      # Main function to execute the scheduling algor
         print(1)
         print(','.join(str(p) for p in preemption_counts))
     else:
-        print(0)
+        print(0)                      # Print 0 if not shedulable
         print()
 
 if __name__ == "__main__":
