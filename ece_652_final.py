@@ -10,7 +10,7 @@ def main():                      # Main function to execute the scheduling algor
     workLoadFileName = sys.argv[1]
 
     if not os.path.isfile(workLoadFileName):                             # Check if the workload file exists
-        print(f"❌ ERROR: File '{workLoadFileName}' does not exist.")   # Print error message if file does not exist
+        print(f"ERROR: File '{workLoadFileName}' does not exist. Incorrect arguments.")   # Print error message if file does not exist
         sys.exit(1)
 
     with open(workLoadFileName, 'r') as file:                             # Open the workload file for reading
