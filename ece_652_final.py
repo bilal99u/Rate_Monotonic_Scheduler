@@ -24,8 +24,7 @@ def main():                      # Main function to execute the scheduling algor
     """ Task creation, in this section, we parse, lines from the workload file, and create a task for each line."""
     for i, line in enumerate(lines):                            
         parts = line.strip().split(',')
-         """ if the line does not have exactly 3 parts, print an error message, because missing either exe, per, or deadline """
-        if len(parts) != 3:                     
+        if len(parts) != 3:                 # Lines should have exactly 3 values: execution time, period, and deadline    
             print(f"Skipping line {i+1}: expected 3 values, got {len(parts)}")
             schedulable = False
             workloadError = True
