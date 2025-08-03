@@ -2,7 +2,7 @@ import os
 import sys
 import math
 
-def main():                      # Main function to execute the scheduling algorithm
+def main():                      # Main function to execute the scheduling algorithm and workload parsing
     if len(sys.argv) != 2:       # Check if the correct number of command line arguments is provided
         print("Usage: python ece_652_final.py <workload_file>") # Print usage instructions if not incorrectly run
         sys.exit(1)
